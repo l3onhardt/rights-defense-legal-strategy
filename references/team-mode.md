@@ -1,34 +1,46 @@
 # Team Mode
 
-Use team mode to make the work resemble a disciplined legal operations team. Do not use it for every question. Use it when parallel research materially improves accuracy or speed.
+Use team mode to make the work resemble a disciplined legal operations team. Do not use it for every question. Use it when parallel research, adversarial modeling, or independent review materially improves accuracy or strategy.
 
-## Trigger Team Mode
+The team must not become a group of yes-men. At least one role should attack the user's plan or assumptions when the matter is contested.
+
+## Table of Contents
+
+1. Trigger Team Mode
+2. Main Agent Role
+3. Recommended Subagents
+4. Delegation Rules
+5. Reconciliation Rules
+6. Case Dossier
+7. Example Subagent Prompts
+
+## 1. Trigger Team Mode
 
 Consider team mode when at least one is true:
 
 - The matter has multiple legal issues, multiple parties, or cross-domain facts.
 - The user faces a lawyer letter, corporate legal department, platform enforcement, administrative process, arbitration, lawsuit, criminal risk, or major negotiation.
 - Money, business continuity, account control, employment, housing, public reputation, personal safety, or administrative/criminal consequences are meaningful.
-- Current law, local procedure, platform rules, and similar cases all matter.
-- The user asks for a deep strategy, not a quick answer.
+- Current law, local procedure, platform rules, similar cases, opponent behavior, and forum power all matter.
+- The user asks for deep strategy, adversarial modeling, “杀死比赛”, or a plan that must survive pushback.
 
 Do not use team mode for simple wording, basic evidence sorting, or low-stakes questions where the main agent can verify directly.
 
-## Main Agent Role
+## 2. Main Agent Role
 
 The main agent is the case lead. It must:
 
-1. Intake facts and define the user's goal.
-2. Frame the issues before delegation.
-3. Decide which research streams are independent.
-4. Give each subagent narrow instructions and required output format.
+1. Intake facts and define the user's goal and fallback goals.
+2. Frame narrow issues before delegation.
+3. Decide which streams are independent.
+4. Give each subagent facts, jurisdiction, forum, user goal, and required output format.
 5. Avoid duplicating work across subagents.
-6. Reconcile conflicts and gaps.
+6. Reconcile conflicts, source quality, and strategic tradeoffs.
 7. Produce the final user-facing action plan.
 
-Never outsource final judgment. Subagent outputs are evidence and analysis, not final advice.
+Never outsource final judgment. Subagent outputs are research, attack surfaces, and review inputs, not final advice.
 
-## Recommended Subagents
+## 3. Recommended Subagents
 
 ### Law Researcher
 
@@ -39,117 +51,221 @@ Use when: legal basis, deadlines, jurisdiction, complaint route, authority, or p
 Required output:
 
 ```text
-Issue:
-Verified source:
-Official URL or source name:
-Effective/amendment date:
-Rule summary:
-Applies if:
-Does not apply if:
-Uncertainty/local variation:
-Strategic impact:
+issue:
+verified source:
+official url or source name:
+effective/amendment date:
+rule summary:
+applies if:
+does not apply if:
+uncertainty/local variation:
+strategic impact:
+```
+
+### Procedure and Channel Researcher
+
+Purpose: identify filing channels, complaint portals, local court/arbitration requirements, evidence submission format, deadlines, responsible institutions, and rejection risks.
+
+Required output:
+
+```text
+channel:
+responsible institution:
+scope/power level:
+can grant or only pressure:
+required materials:
+deadline:
+submission method:
+expected response:
+common rejection reasons:
 ```
 
 ### Case and Pattern Researcher
 
 Purpose: find similar cases, regulator actions, platform precedents, public disputes, or court reasoning patterns.
 
-Use when: practical outcomes, proof standards, settlement leverage, or regulator/court attitude matters.
+Use when: practical outcomes, proof standards, settlement leverage, or regulator/court/platform attitude matters.
 
 Required output:
 
 ```text
-Pattern:
-Sources found:
-Similarity to user's facts:
-Key differences:
-Outcome or handling:
-Useful lesson:
-Reliability:
+pattern:
+sources found:
+similarity to user's facts:
+key differences:
+outcome or handling:
+useful lesson:
+reliability:
 ```
 
-### Procedure and Channel Researcher
+### Opposing Counsel / Counterparty Modeler
 
-Purpose: identify filing channels, complaint portals, local court/arbitration requirements, evidence submission format, deadlines, and responsible institutions.
+Purpose: argue the opponent's strongest lawful position and predict their next moves.
 
-Use when: the next step depends on where/how to file or complain.
+Use when: the plan may face denial, delay, counterclaim, corporate legal response, landlord/employer/platform defense, or reputation attack.
 
 Required output:
 
 ```text
-Channel:
-Responsible institution:
-Scope:
-Required materials:
-Deadline:
-Submission method:
-Expected response:
-Risks or common rejection reasons:
+opponent's strongest factual story:
+opponent's strongest legal/contractual/platform defense:
+opponent's strongest procedural defense:
+evidence they may have:
+weak points in user's story:
+likely delay tactic:
+likely counter-demand/counterclaim:
+settlement posture:
+what would make them comply:
+```
+
+### Decision-Maker Modeler
+
+Purpose: model how the relevant judge, arbitrator, regulator, platform reviewer, mediator, police officer, administrative body, employer, or public audience would evaluate the matter.
+
+Required output:
+
+```text
+decision-maker/forum:
+scope and power:
+main questions they will ask:
+evidence they will value:
+evidence/noise they may ignore:
+common rejection reasons:
+realistic remedy:
+time/cost/enforcement reality:
+credibility advice:
+```
+
+### Evidence Skeptic
+
+Purpose: attack the current evidence record and identify the cheapest proof improvements.
+
+Required output:
+
+```text
+facts currently proven:
+facts only alleged:
+facts likely disputed:
+missing originals/metadata:
+chain-of-custody or authenticity risks:
+admission/waiver risks in prior messages:
+cheapest proof-building action:
+```
+
+### Settlement Designer
+
+Purpose: design terms that protect the user while giving the opponent a rational exit.
+
+Required output:
+
+```text
+settlement objectives:
+minimum acceptable terms:
+valuable non-money terms:
+release scope:
+confidentiality/non-disparagement:
+default clause:
+performance verification:
+risks of signing:
 ```
 
 ### Strategy Reviewer
 
-Purpose: stress-test the main agent's planned countermeasures for legality, leverage, cost, and unintended consequences.
-
-Use when: the plan involves escalation, public communication, settlement, admission, reporting to authorities, or litigation/arbitration.
+Purpose: stress-test the main agent's planned countermeasures for legality, leverage, cost, evidence, escalation, unintended consequences, and remedy realism.
 
 Required output:
 
 ```text
-Strong points:
-Weak points:
-Legal/procedural risks:
-Evidence risks:
-Negotiation risks:
-Suggested safer alternative:
-Questions to ask user:
+strong points:
+weak points:
+legal/procedural risks:
+evidence risks:
+negotiation risks:
+retaliation/reputation risks:
+remedy realism:
+suggested safer alternative:
+questions to ask user:
 ```
 
-## Delegation Rules
+## 4. Delegation Rules
 
-- Delegate only after the main agent has a short issue list. Do not ask subagents to "research everything."
-- Give subagents facts, jurisdiction, parties, goal, and issue scope. Do not pass irrelevant private material.
+- Delegate only after the main agent has a short issue list. Do not ask subagents to “research everything.”
+- Give subagents only the facts needed for their stream.
 - Ask subagents to separate verified sources from inference.
 - Require source names and dates for legal claims.
 - Use official or authoritative sources first; unofficial summaries are clues only.
-- If subagents disagree, present the conflict and explain which source is stronger.
+- Require opponent-modeling roles to make the user's case uncomfortable, not flattering.
 - If a subagent cannot verify a point, mark it unverified instead of filling the gap with memory.
 
-## Case Dossier
+## 5. Reconciliation Rules
 
-For complex matters, keep a lightweight dossier in the answer or a local file only if the user asks. Recommended sections:
+The main agent must reconcile:
 
 ```text
-Facts:
-Timeline:
-Evidence inventory:
-Issues:
-Verified authorities:
-Similar cases/patterns:
-Channels and deadlines:
-Strategy options:
-Drafts sent:
-Open questions:
+which facts are proven versus disputed:
+which sources are strongest:
+which route can actually grant the remedy:
+which opponent defense is most dangerous:
+which user demand should be narrowed or changed:
+whether decisive leverage exists:
+what second move follows each likely opponent response:
+```
+
+If subagents disagree, present the conflict and explain which source or practical assumption is stronger.
+
+## 6. Case Dossier
+
+For complex matters, keep a lightweight dossier in the answer or a local file only if the user asks.
+
+Recommended sections:
+
+```text
+facts:
+timeline:
+evidence inventory:
+issues:
+verified authorities:
+claim/defense/proof matrix:
+opponent model:
+decision-maker model:
+similar cases/patterns:
+channels and deadlines:
+strategy options:
+drafts sent:
+settlement posture:
+open questions:
 ```
 
 Do not crawl and store all laws. Store only issue-relevant sources, extracts, links, and dates. Re-verify decisive legal authorities on each new matter or when time has passed.
 
-## Example Subagent Prompts
+## 7. Example Subagent Prompts
 
 Law Researcher:
 
 ```text
-Use $rights-defense-legal-strategy as a law researcher. Facts: replace this with the brief verified facts. Jurisdiction: replace this with the place or forum. User goal: replace this with the desired outcome. Research only these issues: replace this with the framed issues. Verify current mainland China legal/procedural sources. Return the required Law Researcher output format. Do not give final strategy.
+Use $rights-defense-legal-strategy as a law researcher. Facts: [brief verified facts]. Jurisdiction/forum: [place/forum]. User goal: [goal]. Research only these issues: [issues]. Verify current mainland China legal/procedural/platform sources. Return the Law Researcher output format. Do not give final strategy.
 ```
 
-Case and Pattern Researcher:
+Opposing Counsel / Counterparty Modeler:
 
 ```text
-Use $rights-defense-legal-strategy as a case and pattern researcher. Facts: replace this with the brief verified facts. Search for similar cases, regulator actions, platform precedents, or public handling patterns. Return similarities, differences, outcomes, reliability, and practical lessons. Do not give final strategy.
+Use $rights-defense-legal-strategy as opposing counsel/counterparty modeler. Facts: [brief facts]. User goal: [goal]. Assume the opponent is competent and wants to minimize liability/cost. Build their strongest factual, legal, contractual/platform, procedural, and negotiation response. Identify the user's weakest points and likely opponent next moves. Do not flatter the user's position.
+```
+
+Decision-Maker Modeler:
+
+```text
+Use $rights-defense-legal-strategy as decision-maker modeler. Facts: [brief facts]. Proposed forum/channel: [forum]. Model how this judge/arbitrator/regulator/platform reviewer/mediator/police/admin body would evaluate jurisdiction, evidence, remedy, credibility, timing, and rejection reasons. Return realistic remedy and bottlenecks.
+```
+
+Evidence Skeptic:
+
+```text
+Use $rights-defense-legal-strategy as evidence skeptic. Facts and evidence: [summary]. Identify which facts are proven, alleged, likely disputed, or unsupported. Attack authenticity, completeness, chain-of-custody, admission, waiver, and missing-original risks. Return the cheapest proof-building actions.
 ```
 
 Strategy Reviewer:
 
 ```text
-Use $rights-defense-legal-strategy as a strategy reviewer. Facts: replace this with the brief verified facts. Draft plan to review: replace this with the current proposed plan. Stress-test legality, evidence, negotiation, escalation, and unintended consequences. Return risks and safer alternatives. Do not rewrite the final answer.
+Use $rights-defense-legal-strategy as strategy reviewer. Facts: [brief facts]. Draft plan: [plan]. Stress-test legality, evidence, opponent response, decision-maker view, settlement, remedy realism, and unintended consequences. Return risks and safer alternatives. Do not rewrite the final answer.
 ```

@@ -1,4 +1,4 @@
 interface:
   display_name: "Rights Defense Legal Strategy"
-  short_description: "大陆用户权益维护与合法反击策略"
-  default_prompt: "Use $rights-defense-legal-strategy to analyze my dispute and build a lawful rights-defense action plan."
+  short_description: "大陆维权、对抗建模与合法反击策略"
+  default_prompt: "Use $rights-defense-legal-strategy to analyze my dispute with source verification, opponent modeling, decision-maker perspective, and a lawful action plan."
